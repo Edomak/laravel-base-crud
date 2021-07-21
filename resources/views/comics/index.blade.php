@@ -2,6 +2,11 @@
 
 @section('content')
     <h1>Comics</h1>
+    @if (session('deleted'))
+        <div class="alert alert-success">
+            {{ session('deleted') }}
+        </div>
+    @endif
 
     <table class="mt-4 table table-striped">
         <thead>
@@ -24,7 +29,17 @@
                             EDIT
                         </a>
                     </td>
-                    <td>DELETE</td>
+                    <td>
+                        <form 
+                            action="{{ route('comics.destroy', $comic->id) }}" 
+                            method="POST"
+                            onSubmit = "return confirm('Sei sicuro di voler cancellare definitivamente?')"
+                            >
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" class="btn btn-danger" value="DELETE">
+                        </form>
+                    </td>
                 </tr> 
             @endforeach
         </tbody>
